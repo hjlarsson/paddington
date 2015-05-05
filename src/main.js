@@ -49,14 +49,10 @@ function update() {
 
     if (cursors.left.isDown)
     {
-        //backgroundTileSprite.tilePosition.x += 8;
-        //player.body.rotation -= 3;
         player.body.angularVelocity = -250;
     }
     else if (cursors.right.isDown)
     {
-        //backgroundTileSprite.tilePosition.x -= 8;
-        //player.body.rotation += 3;
         player.body.angularVelocity = 250;
     } else {
         player.body.angularVelocity = 0;
@@ -64,8 +60,6 @@ function update() {
 
     if (cursors.up.isDown)
     {
-        //backgroundTileSprite.tilePosition.y += 8;
-        //var acceleration = game.physics.arcade.accelerationFromRotation(player.body.rotation, ACCLERATION, player.acceleration);
         game.physics.arcade.accelerationFromRotation(player.rotation - BASE_TEXTURE_ROTATION, ACCLERATION, player.body.acceleration);
     } else {
         player.body.acceleration.set(0);
