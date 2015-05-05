@@ -1,0 +1,20 @@
+{
+  "name": "Paddington",
+  "version": "0.0.1",
+  "description": "Space shooter using Phaser",
+  "repository": "",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "webpack": "1.8.5",
+    "webpack-dev-server": "1.8.0"
+
+  },
+  "scripts": {
+    "start": "webpack-dev-server -d --colors"
+
+  },
+  "author": "Håkan Rosenhorn",
+  "license": "MIT"
+}
