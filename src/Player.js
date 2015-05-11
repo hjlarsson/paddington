@@ -10,6 +10,8 @@ function Player(game) {
     this.exhaust = null;
     this.cursors = null;
     this.shipTrail = null;
+    var fireButton = null;
+    var bombTimer = 0;
 }
 
 Player.constructor = Player;
@@ -18,6 +20,7 @@ Player.prototype.preload = function () {
     this.game.load.image('player', 'assets/ship.png');
     this.game.load.spritesheet('exhaust', 'assets/exhaust.png', 91, 128, 4);
     this.game.load.image('bolt_gold', 'assets/bolt_gold.png');
+    this.game.load.image('bomb', 'assets/pill_red.png');
 };
 
 
@@ -37,7 +40,7 @@ Player.prototype.create = function () {
     this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
     this.game.camera.focusOnXY(0, 0);
 
-    this.exhaust = this.game.add.sprite(300, 200, 'exhaust');
+    this.exhaust = this.game.add.sprite(0, 0, 'exhaust');
     this.exhaust.animations.add('walk');
     this.exhaust.animations.play('walk', 20, true);
     this.exhaust.scale.x = 0.4;
@@ -58,19 +61,29 @@ Player.prototype.create = function () {
     this.shipTrail.setAlpha(1, 0.01, 800);
     this.shipTrail.setScale(0.1, 0.5, 0.1, 0.5, 2000, Phaser.Easing.Quintic.Out);
     this.shipTrail.start(false, 2000, 10);
+    this.shipTrail.visible = false;
     this.player.addChild(this.shipTrail);
 
-    ////  Our bullet group
-    //bombs = game.add.group();
-    //bombs.enableBody = true;
-    //bombs.physicsBodyType = Phaser.Physics.ARCADE;
-    //bombs.createMultiple(30, 'bullet');
-    //bombs.setAll('anchor.x', 0.5);
-    //bombs.setAll('anchor.y', 1);
-    //bombs.setAll('outOfBoundsKill', true);
-    //bombs.setAll('checkWorldBounds', true);
+    this.fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    //  Our bullet group
+    bombs = this.game.add.group();
+    bombs.enableBody = true;
+    bombs.physicsBodyType = Phaser.Physics.ARCADE;
+    bombs.createMultiple(1, 'bomb');
+    bombs.setAll('anchor.x', 0.5);
+    bombs.setAll('anchor.y', 1);
+    bombs.setAll('outOfBoundsKill', true);
+    bombs.setAll('checkWorldBounds', true);
 };
 
+
+Player.prototype.showTrail = function () {
+  this.shipTrail.visible = true;
+};
+
+Player.prototype.hideTrail = function () {
+    this.shipTrail.visible = false;
+};
 
 Player.prototype.update = function () {
     this.exhaust.visible = false;
@@ -90,6 +103,37 @@ Player.prototype.update = function () {
     } else {
         this.player.body.acceleration.set(0);
     }
+
+    //  Fire bullet
+    if (this.player.alive && (this.fireButton.isDown || this.game.input.activePointer.isDown)) {
+        this.fireBullet();
+    }
 };
+
+Player.prototype.fireBullet = function () {
+    console.log("Firing");
+    if (this.game.time.now > this.bombTimer)
+    {
+        var BULLET_SPEED = 400;
+        var BULLET_SPACING = 250;
+        //  Grab the first bullet we can from the pool
+        var bomb = bombs.getFirstExists(false);
+
+        if (bomb)
+        {
+            //  And fire it
+            //  Make bullet come out of tip of ship with right angle
+            var bombOffset = 20 * Math.sin(this.game.math.degToRad(this.player.angle));
+            bomb.reset(this.player.x + bombOffset, this.player.y);
+            bomb.angle = this.player.angle;
+            this.game.physics.arcade.velocityFromAngle(bomb.angle - 90, BULLET_SPEED, bomb.body.velocity);
+            bomb.body.velocity.x += this.player.body.velocity.x;
+
+            this.bombTimer = this.game.time.now + BULLET_SPACING;
+        }
+    }
+};
+
+
 
 module.exports = Player;
