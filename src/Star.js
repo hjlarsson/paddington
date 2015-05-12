@@ -1,18 +1,14 @@
-function Star(game) {
+function Star(game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, 'star');
+
     this.game = game;
     this.sprite = null;
+    this.anchor.setTo(0.5, 0.5);
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+
 }
+Star.prototype = Object.create(Phaser.Sprite.prototype);
 Star.constructor = Star;
-
-Star.prototype.preload = function () {
-    this.game.load.image('star', 'assets/star_gold.png');
-};
-
-Star.prototype.create = function () {
-    this.sprite = this.game.add.sprite(300, 300, 'star');
-    this.sprite.anchor.setTo(0.5, 0.5);
-    this.game.physics.enable(this.sprite, Phaser.Physics.ARCADE);
-};
 
 Star.prototype.update = function () {
 };

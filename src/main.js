@@ -11,7 +11,7 @@ var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, 
 
 var background = new Background(game);
 var player = new Player(game);
-var star = new Star(game);
+var star = null;
 
 function render() {
     //game.debug.body(star.sprite);
@@ -21,7 +21,7 @@ function render() {
 function preload() {
     background.preload();
     player.preload();
-    star.preload();
+    game.load.image('star', 'assets/star_gold.png');
 }
 
 function create() {
@@ -32,7 +32,10 @@ function create() {
 
     background.create();
     player.create();
-    star.create();
+
+    star = new Star(game, 300, 300);
+    game.world.add(star);
+
 }
 
 function update() {
@@ -40,8 +43,8 @@ function update() {
     player.update();
     star.update();
 
-    game.physics.arcade.overlap(player.player, star.sprite, function (a, b) {
+    game.physics.arcade.overlap(player.player, star, function (a, b) {
         player.showTrail();
-        star.sprite.visible = false;
+        star.visible = false;
     }, null, this);
 }
