@@ -9,7 +9,7 @@ var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, 
     render: render
 });
 
-var background = new Background(game);
+var background = null;
 var player = new Player(game);
 var star = null;
 
@@ -19,8 +19,9 @@ function render() {
 }
 
 function preload() {
-    background.preload();
+
     player.preload();
+    game.load.image('background', 'assets/background/background2.jpg');
     game.load.image('star', 'assets/star_gold.png');
 }
 
@@ -30,7 +31,10 @@ function create() {
     //  Resize our game world to be a 2000 x 2000 square
     game.world.setBounds(-1000, -1000, 2000, 2000);
 
-    background.create();
+    background = new Background(game);
+    game.world.add(background);
+
+
     player.create();
 
     star = new Star(game, 300, 300);

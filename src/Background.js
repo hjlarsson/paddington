@@ -1,21 +1,15 @@
 function Background(game) {
+    Phaser.TileSprite.call(this, game, 0, 0, game.width, game.height, 'background');
     this.game = game;
-    this.sprite = null;
+    this.fixedToCamera = true;
 }
+
+Background.prototype = Object.create(Phaser.TileSprite.prototype);
 Background.constructor = Background;
 
-Background.prototype.preload = function () {
-    this.game.load.image('background', 'assets/background/background2.jpg');
-};
-
-Background.prototype.create = function () {
-    this.sprite = this.game.add.tileSprite(0, 0, this.game.width, this.game.height, 'background');
-    this.sprite.fixedToCamera = true;
-};
-
 Background.prototype.update = function () {
-    this.sprite.tilePosition.x = -this.game.camera.x;
-    this.sprite.tilePosition.y = -this.game.camera.y;
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
 };
 
 module.exports = Background;
