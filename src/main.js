@@ -1,6 +1,7 @@
 var Background = require("./Background");
 var Player = require("./Player");
 var Star = require("./Star");
+var StarSystem = require("./StarSystem");
 
 var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, '', {
     preload: preload,
@@ -32,6 +33,8 @@ function create() {
 
     //  Resize our game world to be a 2000 x 2000 square
     game.world.setBounds(-1000, -1000, 2000, 2000);
+
+    var starSystem = new StarSystem(game);
 
     background = new Background(game);
     game.world.add(background);
