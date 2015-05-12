@@ -12,4 +12,8 @@ Background.prototype.update = function () {
     this.tilePosition.y = -this.game.camera.y;
 };
 
+Background.preload = function (game) {
+    game.load.image('background', 'assets/background/background2.jpg');
+};
+
 module.exports = Background;

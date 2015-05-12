@@ -20,9 +20,11 @@ function render() {
 
 function preload() {
 
+    Background.preload(game);
+    Star.preload(game);
     player.preload();
-    game.load.image('background', 'assets/background/background2.jpg');
-    game.load.image('star', 'assets/star_gold.png');
+
+
 }
 
 function create() {
