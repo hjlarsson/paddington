@@ -14,8 +14,8 @@ var player = new Player(game);
 var star = new Star(game);
 
 function render() {
-    game.debug.body(star.sprite);
-    game.debug.body(player.player);
+    //game.debug.body(star.sprite);
+    //game.debug.body(player.player);
 }
 
 function preload() {
