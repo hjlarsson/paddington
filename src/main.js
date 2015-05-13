@@ -23,6 +23,7 @@ function preload() {
 
     Background.preload(game);
     Star.preload(game);
+    StarSystem.preload(game);
     player.preload();
 
 
@@ -34,12 +35,13 @@ function create() {
     //  Resize our game world to be a 2000 x 2000 square
     game.world.setBounds(-1000, -1000, 2000, 2000);
 
-    var starSystem = new StarSystem(game);
+
 
     background = new Background(game);
+
     game.world.add(background);
 
-
+    var starSystem = new StarSystem(game);
     player.create();
 
     star = new Star(game, 300, 300);
