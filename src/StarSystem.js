@@ -34,16 +34,11 @@ function StarSystem(game) {
 StarSystem.constructor = StarSystem;
 
 StarSystem.prototype.createStar = function () {
-    console.log("Spawning star", this.stars.length);
     var star = this.stars.getFirstDead();
-    console.log("Got star", star);
     if (star) {
-
-        var bounds = this.game.world.getBounds();
-        console.log("Bounds", bounds);
-        var x = this.game.rnd.integerInRange(200, this.world._width - 200);
-        var y = this.game.rnd.integerInRange(200, this.world._height - 200);
-        console.log("Resetting star", x, y, this.world._width);
+        var bounds = this.game.world.bounds;
+        var x = this.game.rnd.integerInRange(bounds.x + 200, bounds.width - 200);
+        var y = this.game.rnd.integerInRange(bounds.y + 200, bounds.height - 200);
         star.reset(x, y);
     }
 
