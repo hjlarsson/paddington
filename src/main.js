@@ -1,7 +1,7 @@
 var Background = require("./Background");
 var Player = require("./Player");
-var Star = require("./Star");
 var StarSystem = require("./StarSystem");
+var DefenceSystem = require("./DefenceSystem");
 
 var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, '', {
     preload: preload,
@@ -12,8 +12,10 @@ var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, 
 
 var background = null;
 var player = new Player(game);
-var star = null;
-
+//var star = null;
+var starSystem = null;
+var defenceSystem = null;
+var shields;
 function render() {
     //game.debug.body(star.sprite);
     //game.debug.body(player.player);
@@ -21,9 +23,11 @@ function render() {
 
 function preload() {
 
+    //game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
     Background.preload(game);
-    Star.preload(game);
+    DefenceSystem.preload(game);
     StarSystem.preload(game);
+
     player.preload();
 
 
@@ -35,27 +39,37 @@ function create() {
     //  Resize our game world to be a 2000 x 2000 square
     game.world.setBounds(-1000, -1000, 2000, 2000);
 
-
-
     background = new Background(game);
 
     game.world.add(background);
 
-    var starSystem = new StarSystem(game);
+    starSystem = new StarSystem(game);
+    defenceSystem = new DefenceSystem(game);
     player.create();
 
-    star = new Star(game, 300, 300);
-    game.world.add(star);
-
+    shields = game.add.text(game.width - 250, 50, 'Stars: ' + player.score, { font: '20px Arial', fill: '#fff' });
+    shields.render = function () {
+            shields.text = 'Stars: ' + Math.max(player.score, 0);
+    };
+    shields.fixedToCamera = true;
 }
 
 function update() {
     background.update();
     player.update();
-    star.update();
+    //star.update();
+    shields.render();
 
-    game.physics.arcade.overlap(player.player, star, function (a, b) {
+    game.physics.arcade.overlap(player.player, starSystem.stars, function (a, star) {
         player.showTrail();
-        star.visible = false;
+        player.score += 1;
+        star.kill();
+        //star.visible = false;
+    }, null, this);
+
+    game.physics.arcade.overlap(player.player, defenceSystem.bombs, function (a, star) {
+        player.explode();
     }, null, this);
 }
+
+
