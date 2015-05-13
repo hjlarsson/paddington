@@ -100,8 +100,6 @@ Player.prototype.update = function () {
     } else {
         this.player.body.acceleration.set(0);
     }
-
-    this.game.physics.arcade.overlap(this.player, this.bombs, shipCollide, null, this);
 };
 
 Player.prototype.explode = function () {
