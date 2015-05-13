@@ -18,7 +18,11 @@ var defenceSystem = null;
 var shields;
 function render() {
     //game.debug.body(star.sprite);
-    //game.debug.body(player.player);
+    defenceSystem.turrets.forEach(function (child) {
+        game.debug.body(child);
+    }, this, true);
+
+    game.debug.body(defenceSystem.turrets);
 }
 
 function preload() {
@@ -37,14 +41,14 @@ function create() {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  Resize our game world to be a 2000 x 2000 square
-    game.world.setBounds(-1000, -1000, 2000, 2000);
+    //game.world.setBounds(-1000, -1000, 2000, 2000);
 
     background = new Background(game);
 
     game.world.add(background);
 
     starSystem = new StarSystem(game);
-    defenceSystem = new DefenceSystem(game);
+    defenceSystem = new DefenceSystem(game, player);
     player.create();
 
     shields = game.add.text(game.width - 250, 50, 'Stars: ' + player.score, { font: '20px Arial', fill: '#fff' });
@@ -67,7 +71,7 @@ function update() {
         //star.visible = false;
     }, null, this);
 
-    game.physics.arcade.overlap(player.player, defenceSystem.bombs, function (a, star) {
+    game.physics.arcade.overlap(player.player, defenceSystem.turrets, function (a, star) {
         player.explode();
     }, null, this);
 }

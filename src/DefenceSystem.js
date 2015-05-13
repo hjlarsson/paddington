@@ -1,15 +1,16 @@
 var Turret = require("./Turret");
 
-function DefenceSystem(game) {
+function DefenceSystem(game, player) {
     this.game = game;
+    this.player = player;
     this.spawnTime = 500;
 
     this.ammo = this.game.add.group();
     this.ammo.enableBody = true;
     this.ammo.physicsBodyType = Phaser.Physics.ARCADE;
-    this.ammo.createMultiple(50, 'ammo');
+    this.ammo.createMultiple(60, 'ammo');
     this.ammo.setAll('anchor.x', 0.5);
-    this.ammo.setAll('anchor.y', 1);
+    this.ammo.setAll('anchor.y', 0.5);
     this.ammo.setAll('scale.x', 0.5);
     this.ammo.setAll('scale.y', 0.5);
     this.ammo.setAll('outOfBoundsKill', true);
@@ -20,12 +21,12 @@ function DefenceSystem(game) {
     this.turrets.physicsBodyType = Phaser.Physics.ARCADE;
     //this.bombs.createMultiple(30, 'bomb');
     this.turrets.setAll('anchor.x', 0.5);
-    this.turrets.setAll('anchor.y', 1);
+    this.turrets.setAll('anchor.y', 0.5);
     this.turrets.setAll('outOfBoundsKill', true);
     this.turrets.setAll('checkWorldBounds', true);
 
-    for (i = 0; i < 30; i++) {
-        this.turrets.add(new Turret(this.game, this.ammo));
+    for (i = 0; i < 1; i++) {
+        this.turrets.add(new Turret(this.game, this.ammo, this.player));
     }
     this.turrets.callAll('kill');
 
