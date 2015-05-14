@@ -1,6 +1,5 @@
 # paddington
-Exploring the wast lands of Phaser
-
+A game made for Birdie 2015 game dev compo. Taking the opportunity to learn and explore Phaser.io library.
 
 Credits
 -------

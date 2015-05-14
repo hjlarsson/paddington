@@ -12,7 +12,7 @@
 
   },
   "scripts": {
-    "start": "webpack-dev-server -d --colors"
+    "start": "webpack-dev-server -d --colors --host 0.0.0.0"
 
   },
   "author": "Håkan Rosenhorn",

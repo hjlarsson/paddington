@@ -8,6 +8,6 @@ module.exports = {
     },
     module: {
         loaders: []
-    }
-    //plugins: [new webpack.optimize.UglifyJsPlugin()]
+    },
+    plugins: [new webpack.optimize.UglifyJsPlugin()]
 };
