@@ -34,7 +34,6 @@ function DefenceSystem(game, player) {
     this.spawnTimer = this.game.time.events.add(game.rnd.integerInRange(this.spawnTime, this.spawnTime + 5000), this.createTurret.bind(this));
 }
 
-//Background.prototype = Object.create(Phaser.TileSprite.prototype);
 DefenceSystem.constructor = DefenceSystem;
 
 DefenceSystem.prototype.createTurret = function () {
