@@ -3,7 +3,7 @@ var Turret = require("./Turret");
 function DefenceSystem(game, player) {
     this.game = game;
     this.player = player;
-    this.spawnTime = 500;
+    this.spawnTime = 3000;
 
     this.ammo = this.game.add.group();
     this.ammo.enableBody = true;
@@ -15,6 +15,7 @@ function DefenceSystem(game, player) {
     this.ammo.setAll('scale.y', 0.5);
     this.ammo.setAll('outOfBoundsKill', true);
     this.ammo.setAll('checkWorldBounds', true);
+    this.ammo.callAll('kill');
 
     this.turrets = this.game.add.group();
     this.turrets.enableBody = true;
@@ -25,14 +26,12 @@ function DefenceSystem(game, player) {
     this.turrets.setAll('outOfBoundsKill', true);
     this.turrets.setAll('checkWorldBounds', true);
 
-    for (i = 0; i < 1; i++) {
+    for (i = 0; i < 10; i++) {
         this.turrets.add(new Turret(this.game, this.ammo, this.player));
     }
     this.turrets.callAll('kill');
 
-
-
-    this.spawnTimer = this.game.time.events.add(game.rnd.integerInRange(this.spawnTime, this.spawnTime + 500), this.createTurret.bind(this));
+    this.spawnTimer = this.game.time.events.add(game.rnd.integerInRange(this.spawnTime, this.spawnTime + 5000), this.createTurret.bind(this));
 }
 
 //Background.prototype = Object.create(Phaser.TileSprite.prototype);
@@ -48,6 +47,11 @@ DefenceSystem.prototype.createTurret = function () {
     }
 
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(this.spawnTime, this.spawnTime + 1000), this.createTurret.bind(this));
+};
+
+DefenceSystem.prototype.restart = function () {
+    this.ammo.callAll('kill');
+    this.turrets.callAll('kill');
 };
 
 DefenceSystem.prototype.update = function () {

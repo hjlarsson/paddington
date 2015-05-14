@@ -1,4 +1,5 @@
 var Exhaust = require("./Exhaust");
+var Star = require("./Star");
 
 var ACCLERATION = 900;
 var DRAG = 400;
@@ -26,7 +27,6 @@ Player.prototype.preload = function () {
     this.game.load.image('star_gold', 'assets/star_gold.png');
     this.game.load.spritesheet('explosion', 'assets/explode.png', 128, 128);
 };
-
 
 Player.prototype.create = function () {
     this.exhaust.create();
@@ -72,6 +72,21 @@ Player.prototype.create = function () {
     this.explosions.forEach(function (explosion) {
         explosion.animations.add('explosion');
     });
+
+    //  Our star group
+    this.stars = this.game.add.group();
+    this.stars.enableBody = true;
+    this.stars.enableBodyDebug = true;
+    this.stars.physicsBodyType = Phaser.Physics.ARCADE;
+    this.stars.setAll('anchor.x', 0.5);
+    this.stars.setAll('anchor.y', 1);
+    this.stars.setAll('outOfBoundsKill', true);
+    this.stars.setAll('checkWorldBounds', true);
+
+    for (i = 0; i < 5; i++) {
+        this.stars.add(new Star(this.game));
+    }
+    this.stars.callAll('kill');
 };
 
 Player.prototype.showTrail = function () {
@@ -102,6 +117,30 @@ Player.prototype.update = function () {
     }
 };
 
+Player.prototype.releaseStars = function () {
+    for (i = 0; i < Math.min(this.score, this.stars.length); i++) {
+        var star = this.stars.getFirstDead();
+        if (star) {
+            var bounds = this.game.world.bounds;
+            var x = this.game.rnd.integerInRange(bounds.x + 200, bounds.width - 200);
+            var y = this.game.rnd.integerInRange(bounds.y + 200, bounds.height - 200);
+            star.reset(this.player.body.x, this.player.body.y);
+            this.game.physics.arcade.accelerateToXY(star, x, y, 700, 1200, 1200)
+        }
+    }
+};
+
+Player.prototype.collide = function () {
+    console.log("Collision");
+    if (this.score > 0) {
+        console.log("Dispatch stars");
+        this.releaseStars();
+        this.score = 0;
+    } else {
+        this.explode();
+    }
+};
+
 Player.prototype.explode = function () {
     var explosion = this.explosions.getFirstExists(false);
     if (explosion) {
@@ -111,6 +150,11 @@ Player.prototype.explode = function () {
     }
 
     this.player.kill();
+};
+
+Player.prototype.restart = function () {
+    this.hideTrail();
+    this.player.reset(200, 200);
 };
 
 module.exports = Player;

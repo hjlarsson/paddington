@@ -4,7 +4,7 @@ function StarSystem(game) {
     this.game = game;
     this.spawnTime = 500;
 
-    //  Our bullet group
+    //  Our star group
     this.stars = this.game.add.group();
     this.stars.enableBody = true;
     this.stars.enableBodyDebug = true;
@@ -38,6 +38,10 @@ StarSystem.prototype.createStar = function () {
 };
 
 StarSystem.prototype.update = function () {
+};
+
+StarSystem.prototype.restart = function () {
+    this.stars.callAll('kill');
 };
 
 StarSystem.preload = function (game) {

@@ -16,13 +16,17 @@ var player = new Player(game);
 var starSystem = null;
 var defenceSystem = null;
 var shields;
+var gameOver;
+var fireButton;
+
 function render() {
     //game.debug.body(star.sprite);
+    /*
     defenceSystem.turrets.forEach(function (child) {
         game.debug.body(child);
     }, this, true);
+    */
 
-    game.debug.body(defenceSystem.turrets);
 }
 
 function preload() {
@@ -56,6 +60,17 @@ function create() {
             shields.text = 'Stars: ' + Math.max(player.score, 0);
     };
     shields.fixedToCamera = true;
+
+
+    //  Game over text
+
+    gameOver = game.add.text(game.world.centerX, game.world.centerY, 'GAME OVER!', { font: '20px Arial', fill: '#fff' });
+    //gameOver.x = gameOver.x;
+    //gameOver.y = gameOver.y;
+    gameOver.visible = false;
+    gameOver.fixedToCamera = true;
+
+    fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 }
 
 function update() {
@@ -72,8 +87,43 @@ function update() {
     }, null, this);
 
     game.physics.arcade.overlap(player.player, defenceSystem.turrets, function (a, star) {
-        player.explode();
+        player.collide();
     }, null, this);
+
+    game.physics.arcade.overlap(player.player, defenceSystem.ammo, function (a, ammo) {
+        ammo.kill();
+        player.collide();
+    }, null, this);
+
+    game.physics.arcade.collide(starSystem.stars, defenceSystem.ammo, null, null, null);
+
+    //  Game over?
+    if (! player.player.alive && gameOver.visible === false) {
+        console.log("Game is over!");
+        gameOver.visible = true;
+        gameOver.alpha = 0;
+        var fadeInGameOver = game.add.tween(gameOver);
+        fadeInGameOver.to({alpha: 1}, 1000, Phaser.Easing.Quintic.Out);
+        fadeInGameOver.onComplete.add(setResetHandlers);
+        fadeInGameOver.start();
+        function setResetHandlers() {
+            //  The "click to restart" handler
+            tapRestart = game.input.onTap.addOnce(_restart,this);
+            spaceRestart = fireButton.onDown.addOnce(_restart,this);
+            function _restart() {
+                tapRestart.detach();
+                spaceRestart.detach();
+                console.log("Restarting game");
+                restart();
+            }
+        }
+    }
 }
 
+function restart () {
+    gameOver.visible = false;
+    starSystem.restart();
+    defenceSystem.restart();
+    player.restart();
+}
 
