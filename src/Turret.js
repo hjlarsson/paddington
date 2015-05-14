@@ -18,11 +18,7 @@ Turret.prototype.fireWeapon = function () {
     var bullet = this.ammo.getFirstExists(false);
     if (bullet) {
         bullet.reset(this.body.x + this.width / 2, this.body.y + this.height / 2);
-
-        console.log("Player is at ", this.player.player.x, this.player.player.y);
-        bullet.angle = this.game.physics.arcade.angleToXY(this.player.player.x, this.player.player.y);
-        this.game.physics.arcade.velocityFromAngle(bullet.angle, 200, bullet.body.velocity);
-        bullet.body.velocity.x += 200;
+        this.game.physics.arcade.moveToObject(bullet, this.player.player, 200);
     }
 
     this.spawnTimer = this.game.time.events.add(200, this.fireWeapon.bind(this));
