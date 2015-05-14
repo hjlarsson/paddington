@@ -30,8 +30,7 @@ function render() {
 }
 
 function preload() {
-
-    //game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+    game.load.bitmapFont('spacefont', 'assets/spacefont/spacefont.png', 'assets/spacefont/spacefont.xml');
     Background.preload(game);
     DefenceSystem.preload(game);
     StarSystem.preload(game);
@@ -55,18 +54,18 @@ function create() {
     defenceSystem = new DefenceSystem(game, player);
     player.create();
 
-    shields = game.add.text(game.width - 250, 50, 'Stars: ' + player.score, { font: '20px Arial', fill: '#fff' });
+    shields = this.game.add.bitmapText(this.game.width - 350, 10, 'spacefont', 'Score: ' + player.score, 50);
     shields.render = function () {
-            shields.text = 'Stars: ' + Math.max(player.score, 0);
+            shields.text = 'Score: ' + Math.max(player.score, 0);
     };
+    shields.render();
     shields.fixedToCamera = true;
 
 
     //  Game over text
-
-    gameOver = game.add.text(game.world.centerX, game.world.centerY, 'GAME OVER!', { font: '20px Arial', fill: '#fff' });
-    //gameOver.x = gameOver.x;
-    //gameOver.y = gameOver.y;
+    gameOver = game.add.bitmapText(game.world.centerX, game.world.centerY, 'spacefont', 'GAME OVER!', 110);
+    gameOver.x = gameOver.x - gameOver.textWidth / 2;
+    gameOver.y = gameOver.y - gameOver.textHeight / 3;
     gameOver.visible = false;
     gameOver.fixedToCamera = true;
 
