@@ -37,13 +37,6 @@ StarSystem.prototype.createStar = function () {
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(this.spawnTime, this.spawnTime + 4000), this.createStar.bind(this));
 };
 
-StarSystem.prototype.update = function () {
-};
-
-StarSystem.prototype.restart = function () {
-    this.stars.callAll('kill');
-};
-
 StarSystem.preload = function (game) {
     Star.preload(game);
 };

@@ -48,13 +48,6 @@ DefenceSystem.prototype.createTurret = function () {
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(this.spawnTime, this.spawnTime + 1000), this.createTurret.bind(this));
 };
 
-DefenceSystem.prototype.restart = function () {
-    this.ammo.callAll('kill');
-    this.turrets.callAll('kill');
-};
-
-DefenceSystem.prototype.update = function () {
-};
 
 DefenceSystem.preload = function (game) {
     Turret.preload(game);

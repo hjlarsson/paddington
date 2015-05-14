@@ -149,11 +149,6 @@ Player.prototype.explode = function () {
     this.kill();
 };
 
-Player.prototype.restart = function () {
-    this.hideTrail();
-    this.reset(200, 200);
-};
-
 Player.preload = function (game) {
     game.load.image('player', 'assets/ship.png');
     game.load.image('star_gold', 'assets/star_gold.png');
