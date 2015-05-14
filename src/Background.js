@@ -13,7 +13,8 @@ Background.prototype.update = function () {
 };
 
 Background.preload = function (game) {
-    game.load.image('background', 'assets/background/background2.jpg');
+    var number = game.rnd.integerInRange(1, 8);
+    game.load.image('background', 'assets/background/background' + number + '.jpg');
 };
 
 module.exports = Background;
