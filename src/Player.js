@@ -7,8 +7,18 @@ var MAXSPEED = 400;
 var BASE_TEXTURE_ROTATION = 90 * (Math.PI / 180);
 
 function Player(game) {
+    Phaser.Sprite.call(this, game, 0, 0, 'player');
+
     this.game = game;
-    this.player = null;
+
+    this.anchor.setTo(0.5, 0.5);
+    this.scale.x = 0.3;
+    this.scale.y = 0.3;
+    this.game.physics.enable(this, Phaser.Physics.ARCADE);
+    this.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
+    this.body.drag.setTo(DRAG, DRAG);
+    this.body.collideWorldBounds = true;
+
     this.exhaust = new Exhaust(this.game);
     this.cursors = null;
     this.shipTrail = null;
@@ -17,39 +27,17 @@ function Player(game) {
 
     this.explosions = null;
     this.score = 0;
-}
-
-Player.constructor = Player;
-
-Player.prototype.preload = function () {
-    this.exhaust.preload();
-    this.game.load.image('player', 'assets/ship.png');
-    this.game.load.image('star_gold', 'assets/star_gold.png');
-    this.game.load.spritesheet('explosion', 'assets/explode.png', 128, 128);
-};
-
-Player.prototype.create = function () {
-    this.exhaust.create();
-
-    this.player = this.game.add.sprite(0, 0, 'player');
-    this.player.anchor.setTo(0.5, 0.5);
-    this.player.scale.x = 0.3;
-    this.player.scale.y = 0.3;
-    this.game.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.body.maxVelocity.setTo(MAXSPEED, MAXSPEED);
-    this.player.body.drag.setTo(DRAG, DRAG);
-    this.player.body.collideWorldBounds = true;
 
     this.cursors = this.game.input.keyboard.createCursorKeys();
 
-    this.game.camera.follow(this.player);
+    this.game.camera.follow(this);
     this.game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
     this.game.camera.focusOnXY(0, 0);
 
-    this.player.addChild(this.exhaust.sprite);
+    this.addChild(this.exhaust);
 
     //  Add an emitter for the ship's trail
-    this.shipTrail = this.game.add.emitter(this.player.x, this.player.y + 10, 400);
+    this.shipTrail = this.game.add.emitter(this.x, this.y + 10, 400);
     this.shipTrail.width = 10;
     this.shipTrail.y = 40;
     this.shipTrail.makeParticles('star_gold');
@@ -60,7 +48,7 @@ Player.prototype.create = function () {
     this.shipTrail.setScale(0.1, 0.5, 0.1, 0.5, 2000, Phaser.Easing.Quintic.Out);
     this.shipTrail.start(false, 2000, 10);
     this.shipTrail.visible = false;
-    this.player.addChild(this.shipTrail);
+    this.addChild(this.shipTrail);
 
     //  An explosion pool
     this.explosions = this.game.add.group();
@@ -87,6 +75,15 @@ Player.prototype.create = function () {
         this.stars.add(new Star(this.game));
     }
     this.stars.callAll('kill');
+}
+
+Player.prototype = Object.create(Phaser.Sprite.prototype);
+Player.constructor = Player;
+
+
+Player.prototype.create = function () {
+
+
 };
 
 Player.prototype.showTrail = function () {
@@ -101,19 +98,19 @@ Player.prototype.update = function () {
     this.exhaust.setVisability(false);
 
     if (this.cursors.left.isDown) {
-        this.player.body.angularVelocity = -250;
+        this.body.angularVelocity = -250;
     }
     else if (this.cursors.right.isDown) {
-        this.player.body.angularVelocity = 250;
+        this.body.angularVelocity = 250;
     } else {
-        this.player.body.angularVelocity = 0;
+        this.body.angularVelocity = 0;
     }
 
     if (this.cursors.up.isDown) {
         this.exhaust.setVisability(true);
-        this.game.physics.arcade.accelerationFromRotation(this.player.rotation - BASE_TEXTURE_ROTATION, ACCLERATION, this.player.body.acceleration);
+        this.game.physics.arcade.accelerationFromRotation(this.rotation - BASE_TEXTURE_ROTATION, ACCLERATION, this.body.acceleration);
     } else {
-        this.player.body.acceleration.set(0);
+        this.body.acceleration.set(0);
     }
 };
 
@@ -124,7 +121,7 @@ Player.prototype.releaseStars = function () {
             var bounds = this.game.world.bounds;
             var x = this.game.rnd.integerInRange(bounds.x + 200, bounds.width - 200);
             var y = this.game.rnd.integerInRange(bounds.y + 200, bounds.height - 200);
-            star.reset(this.player.body.x, this.player.body.y);
+            star.reset(this.body.x, this.body.y);
             this.game.physics.arcade.accelerateToXY(star, x, y, 700, 1200, 1200)
         }
     }
@@ -144,17 +141,24 @@ Player.prototype.collide = function () {
 Player.prototype.explode = function () {
     var explosion = this.explosions.getFirstExists(false);
     if (explosion) {
-        explosion.reset(this.player.body.x, this.player.body.y);
+        explosion.reset(this.body.x, this.body.y);
         explosion.alpha = 0.7;
         explosion.play('explosion', 30, false, true);
     }
 
-    this.player.kill();
+    this.kill();
 };
 
 Player.prototype.restart = function () {
     this.hideTrail();
-    this.player.reset(200, 200);
+    this.reset(200, 200);
+};
+
+Player.preload = function (game) {
+    game.load.image('player', 'assets/ship.png');
+    game.load.image('star_gold', 'assets/star_gold.png');
+    game.load.spritesheet('explosion', 'assets/explode.png', 128, 128);
+    Exhaust.preload(game);
 };
 
 module.exports = Player;

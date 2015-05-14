@@ -19,11 +19,11 @@ Turret.constructor = Turret;
 
 Turret.prototype.fireWeapon = function () {
     // Only fire our weapon if we are alive
-    if (this.alive && this.player.player.alive) {
+    if (this.alive && this.player.alive) {
         var bullet = this.ammo.getFirstExists(false);
         if (bullet) {
             bullet.reset(this.body.x + this.width / 2, this.body.y + this.height / 2);
-            this.game.physics.arcade.moveToObject(bullet, this.player.player, BULLET_VELOCITY);
+            this.game.physics.arcade.moveToObject(bullet, this.player, BULLET_VELOCITY);
         }
     }
 

@@ -11,8 +11,7 @@ var game = new Phaser.Game(window.innerWidth , window.innerHeight, Phaser.AUTO, 
 });
 
 var background = null;
-var player = new Player(game);
-//var star = null;
+var player = null;
 var starSystem = null;
 var defenceSystem = null;
 var shields;
@@ -32,12 +31,9 @@ function render() {
 function preload() {
     game.load.bitmapFont('spacefont', 'assets/spacefont/spacefont.png', 'assets/spacefont/spacefont.xml');
     Background.preload(game);
+    Player.preload(game);
     DefenceSystem.preload(game);
     StarSystem.preload(game);
-
-    player.preload();
-
-
 }
 
 function create() {
@@ -51,8 +47,11 @@ function create() {
     game.world.add(background);
 
     starSystem = new StarSystem(game);
+
+    player = new Player(game);
+    game.world.add(player);
+
     defenceSystem = new DefenceSystem(game, player);
-    player.create();
 
     shields = this.game.add.bitmapText(this.game.width - 350, 10, 'spacefont', 'Score: ' + player.score, 50);
     shields.render = function () {
@@ -78,18 +77,18 @@ function update() {
     //star.update();
     shields.render();
 
-    game.physics.arcade.overlap(player.player, starSystem.stars, function (a, star) {
+    game.physics.arcade.overlap(player, starSystem.stars, function (a, star) {
         player.showTrail();
         player.score += 1;
         star.kill();
         //star.visible = false;
     }, null, this);
 
-    game.physics.arcade.overlap(player.player, defenceSystem.turrets, function (a, star) {
+    game.physics.arcade.overlap(player, defenceSystem.turrets, function (a, star) {
         player.collide();
     }, null, this);
 
-    game.physics.arcade.overlap(player.player, defenceSystem.ammo, function (a, ammo) {
+    game.physics.arcade.overlap(player, defenceSystem.ammo, function (a, ammo) {
         ammo.kill();
         player.collide();
     }, null, this);
@@ -97,7 +96,7 @@ function update() {
     game.physics.arcade.collide(starSystem.stars, defenceSystem.ammo, null, null, null);
 
     //  Game over?
-    if (! player.player.alive && gameOver.visible === false) {
+    if (! player.alive && gameOver.visible === false) {
         console.log("Game is over!");
         gameOver.visible = true;
         gameOver.alpha = 0;
