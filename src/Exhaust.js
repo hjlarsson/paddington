@@ -1,5 +1,5 @@
-function Exhaust(game) {
-    Phaser.Sprite.call(this, game, 0, 0, 'exhaust');
+function Exhaust(game, x, y) {
+    Phaser.Sprite.call(this, game, x, y, 'exhaust');
 
     this.game = game;
 
@@ -15,7 +15,7 @@ function Exhaust(game) {
 Exhaust.constructor = Exhaust;
 Exhaust.prototype = Object.create(Phaser.Sprite.prototype);
 
-Exhaust.prototype.setVisability = function (value) {
+Exhaust.prototype.setVisibility = function (value) {
     this.visible = value;
 };
 

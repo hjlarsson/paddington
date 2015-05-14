@@ -11,6 +11,8 @@ function Turret(game, ammo, player) {
     this.scale.setTo(0.3, 0.3);
     this.game.physics.enable(this, Phaser.Physics.ARCADE);
 
+    this.laserSound = this.game.add.audio('laser');
+
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(FIRE_DELAY, FIRE_DELAY * 2), this.fireWeapon.bind(this));
 
 }
@@ -24,6 +26,7 @@ Turret.prototype.fireWeapon = function () {
         if (bullet) {
             bullet.reset(this.body.x + this.width / 2, this.body.y + this.height / 2);
             this.game.physics.arcade.moveToObject(bullet, this.player, BULLET_VELOCITY);
+            this.laserSound.play();
         }
     }
 

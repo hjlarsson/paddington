@@ -1,5 +1,4 @@
 
-
 var GameOver = function (game) {
     this.game = game;
 };

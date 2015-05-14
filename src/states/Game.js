@@ -27,7 +27,6 @@ var Game = function (game) {
 
 Game.prototype.preload = function () {
     this.game.load.bitmapFont('spacefont', 'assets/spacefont/spacefont.png', 'assets/spacefont/spacefont.xml');
-    Background.preload(this.game);
     Player.preload(this.game);
     DefenceSystem.preload(this.game);
     StarSystem.preload(this.game);
@@ -66,6 +65,13 @@ Game.prototype.create = function () {
     gameOver.fixedToCamera = true;
 
     fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+    this.bgMusic = this.game.add.audio('mainmusic');
+    this.bgMusic.loopFull(1);
+    this.bgMusic.play();
+
+    this.starPickupSound = this.game.add.audio('starpickup');
+
 };
 
 Game.prototype.update = function () {
@@ -74,10 +80,13 @@ Game.prototype.update = function () {
     //star.update();
     shields.render();
 
+    var self = this;
+
     this.game.physics.arcade.overlap(player, starSystem.stars, function (a, star) {
         player.showTrail();
         player.score += 1;
         star.kill();
+        self.starPickupSound.play();
         //star.visible = false;
     }, null, this);
 
@@ -109,6 +118,7 @@ Game.prototype.update = function () {
                 tapRestart.detach();
                 spaceRestart.detach();
                 console.log("Restarting game");
+                self.bgMusic.stop();
                 self.game.state.start("Game");
             }
         }

@@ -7,9 +7,8 @@ var MAXSPEED = 400;
 var BASE_TEXTURE_ROTATION = 90 * (Math.PI / 180);
 
 function Player(game) {
-    Phaser.Sprite.call(this, game, 0, 0, 'player');
-
     this.game = game;
+    Phaser.Sprite.call(this, this.game, 0, 0, 'player');
 
     this.anchor.setTo(0.5, 0.5);
     this.scale.x = 0.3;
@@ -75,6 +74,9 @@ function Player(game) {
         this.stars.add(new Star(this.game));
     }
     this.stars.callAll('kill');
+
+    this.explodeSound = this.game.add.audio('explode');
+    this.looseStarsSound = this.game.add.audio('loosestars');
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -95,7 +97,7 @@ Player.prototype.hideTrail = function () {
 };
 
 Player.prototype.update = function () {
-    this.exhaust.setVisability(false);
+    this.exhaust.setVisibility(false);
 
     if (this.cursors.left.isDown) {
         this.body.angularVelocity = -250;
@@ -107,7 +109,7 @@ Player.prototype.update = function () {
     }
 
     if (this.cursors.up.isDown) {
-        this.exhaust.setVisability(true);
+        this.exhaust.setVisibility(true);
         this.game.physics.arcade.accelerationFromRotation(this.rotation - BASE_TEXTURE_ROTATION, ACCLERATION, this.body.acceleration);
     } else {
         this.body.acceleration.set(0);
@@ -128,10 +130,9 @@ Player.prototype.releaseStars = function () {
 };
 
 Player.prototype.collide = function () {
-    console.log("Collision");
     if (this.score > 0) {
-        console.log("Dispatch stars");
         this.releaseStars();
+        this.looseStarsSound.play();
         this.score = 0;
     } else {
         this.explode();
@@ -144,6 +145,7 @@ Player.prototype.explode = function () {
         explosion.reset(this.body.x, this.body.y);
         explosion.alpha = 0.7;
         explosion.play('explosion', 30, false, true);
+        this.explodeSound.play();
     }
 
     this.kill();

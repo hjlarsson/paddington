@@ -12,9 +12,5 @@ Background.prototype.update = function () {
     this.tilePosition.y = -this.game.camera.y;
 };
 
-Background.preload = function (game) {
-    var number = game.rnd.integerInRange(1, 8);
-    game.load.image('background', 'assets/background/background' + number + '.jpg');
-};
 
 module.exports = Background;
