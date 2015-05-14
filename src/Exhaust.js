@@ -1,29 +1,26 @@
 function Exhaust(game) {
+    Phaser.Sprite.call(this, game, 0, 0, 'exhaust');
+
     this.game = game;
-    this.sprite = null;
+
+    this.animations.add('walk');
+    this.animations.play('walk', 20, true);
+    this.scale.x = 0.4;
+    this.scale.y = 0.4;
+    this.x = -15;
+    this.y = 40;
+    this.visible = false;
 }
+
 Exhaust.constructor = Exhaust;
-
-Exhaust.prototype.preload = function () {
-    this.game.load.spritesheet('exhaust', 'assets/exhaust.png', 91, 128, 4);
-};
-
-Exhaust.prototype.create = function () {
-    this.sprite = this.game.add.sprite(0, 0, 'exhaust');
-    this.sprite.animations.add('walk');
-    this.sprite.animations.play('walk', 20, true);
-    this.sprite.scale.x = 0.4;
-    this.sprite.scale.y = 0.4;
-    this.sprite.x = -15;
-    this.sprite.y = 40;
-    this.sprite.visible = false;
-};
-
-Exhaust.prototype.update = function () {
-};
+Exhaust.prototype = Object.create(Phaser.Sprite.prototype);
 
 Exhaust.prototype.setVisability = function (value) {
-    this.sprite.visible = value;
+    this.visible = value;
+};
+
+Exhaust.preload = function (game) {
+    game.load.spritesheet('exhaust', 'assets/exhaust.png', 91, 128, 4);
 };
 
 module.exports = Exhaust;
