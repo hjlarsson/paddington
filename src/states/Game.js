@@ -45,9 +45,9 @@ Game.prototype.create = function () {
 
     defenceSystem = new DefenceSystem(this.game, player);
 
-    shields = this.game.add.bitmapText(this.game.width - 450, 20, 'spacefont', 'Score: ' + player.score, 40);
+    shields = this.game.add.bitmapText(this.game.width - 450, 20, 'spacefont', 'Stars: ' + player.score, 40);
     shields.render = function () {
-        shields.text = 'Score: ' + Math.max(player.score, 0);
+        shields.text = 'Stars: ' + Math.max(player.score, 0);
     };
     shields.render();
     shields.fixedToCamera = true;
