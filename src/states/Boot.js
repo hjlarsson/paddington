@@ -3,7 +3,7 @@ var Boot = function (game) {
 };
 
 Boot.prototype.preload = function () {
-    this.game.load.image("loading","assets/loading.png");
+    this.game.load.image("loading","assets/gamedev_over.png");
 };
 
 Boot.prototype.create = function () {

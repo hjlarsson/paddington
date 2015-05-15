@@ -9,11 +9,4 @@ function Star(game, x, y) {
 Star.prototype = Object.create(Phaser.Sprite.prototype);
 Star.constructor = Star;
 
-Star.prototype.update = function () {
-};
-
-Star.preload = function (game) {
-    game.load.image('star', 'assets/star_gold.png');
-};
-
 module.exports = Star;

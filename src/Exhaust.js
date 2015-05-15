@@ -19,8 +19,4 @@ Exhaust.prototype.setVisibility = function (value) {
     this.visible = value;
 };
 
-Exhaust.preload = function (game) {
-    game.load.spritesheet('exhaust', 'assets/exhaust.png', 91, 128, 4);
-};
-
 module.exports = Exhaust;

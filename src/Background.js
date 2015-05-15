@@ -12,5 +12,4 @@ Background.prototype.update = function () {
     this.tilePosition.y = -this.game.camera.y;
 };
 
-
 module.exports = Background;

@@ -151,11 +151,4 @@ Player.prototype.explode = function () {
     this.kill();
 };
 
-Player.preload = function (game) {
-    game.load.image('player', 'assets/ship.png');
-    game.load.image('star_gold', 'assets/star_gold.png');
-    game.load.spritesheet('explosion', 'assets/explode.png', 128, 128);
-    Exhaust.preload(game);
-};
-
 module.exports = Player;

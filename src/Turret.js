@@ -33,11 +33,4 @@ Turret.prototype.fireWeapon = function () {
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(FIRE_DELAY, FIRE_DELAY * 2), this.fireWeapon.bind(this));
 };
 
-Turret.prototype.update = function () {
-};
-
-Turret.preload = function (game) {
-    game.load.image('turret', 'assets/turret.png');
-};
-
 module.exports = Turret;

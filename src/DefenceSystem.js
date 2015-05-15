@@ -48,10 +48,4 @@ DefenceSystem.prototype.createTurret = function () {
     this.spawnTimer = this.game.time.events.add(this.game.rnd.integerInRange(this.spawnTime, this.spawnTime + 1000), this.createTurret.bind(this));
 };
 
-
-DefenceSystem.preload = function (game) {
-    Turret.preload(game);
-    game.load.image('ammo', 'assets/turretBase_small.png');
-};
-
 module.exports = DefenceSystem;
