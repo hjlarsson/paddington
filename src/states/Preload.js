@@ -17,9 +17,11 @@ Preload.prototype.preload = function () {
     this.game.load.image("menupanel","assets/glassPanel_cornerTL.png");
     this.game.load.image("buttonBlue","assets/buttonBlue.png");
     this.game.load.spritesheet('exhaust', 'assets/exhaust.png', 91, 128, 4);
-    this.game.load.bitmapFont('spacefont', 'assets/spacefont/spacefont.png', 'assets/spacefont/spacefont.xml');
+    this.game.load.bitmapFont('spacefont', 'assets/fonts/paddington.png', 'assets/fonts/paddington.fnt');
     this.game.load.image('ammo', 'assets/turretBase_small.png');
-    this.game.load.image('turret', 'assets/turret.png');
+    //this.game.load.image('turret', 'assets/turret.png');
+    this.game.load.spritesheet('turret', 'assets/turret.png', 91, 91);
+
     this.game.load.image('star', 'assets/star_gold.png');
     this.game.load.image('player', 'assets/ship_red.png');
     this.game.load.image('star_gold', 'assets/star_gold.png');

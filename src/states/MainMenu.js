@@ -19,20 +19,33 @@ MainMenu.prototype.create = function () {
         'buttonBlue', this.startGame, this, 1, 0, 2);
     menuButton.anchor.setTo(0.5, 0.5);
 
+    //  Game over text
+    var gameTitle = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 200, 'spacefont', 'PADDINGTON!', 50);
+    gameTitle.anchor.setTo(0.5, 0.5);
+
+
     var menuPanel = this.add.sprite(this.game.world.centerX, this.game.world.centerY - 50, "menupanel");
     menuPanel.anchor.setTo(0.5, 0.5);
     menuPanel.scale.setTo(5, 2);
 
-    var infoText = this.game.add.text(0, 0, "Mission: Collect stars, avoid death!", { font: "30px Tahoma", fill: "#ff", wordWrap: true, wordWrapWidth: 300, align: "center" });
-    infoText.anchor.set(0.5);
-    infoText.x = this.game.world.centerX;
-    infoText.y = this.game.world.centerY - 80;
+    var infoText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY - 70, 'spacefont', 'Collect stars\navoid death!!', 30);
+    infoText.anchor.setTo(0.5, 0.5);
 
 
-    var buttonText = this.game.add.text(0, 0, "Lets go!", { font: "28px Tahoma", fill: "#ff", wordWrap: true, wordWrapWidth: menuPanel.width, align: "center" });
-    buttonText.anchor.set(0.5);
-    buttonText.x = this.game.world.centerX;
-    buttonText.y = this.game.world.centerY + 2;
+    //var infoText = this.game.add.text(0, 0, "Mission: Collect stars, avoid death!", { font: "30px Tahoma", fill: "#ff", wordWrap: true, wordWrapWidth: 300, align: "center" });
+    //infoText.anchor.set(0.5);
+    //infoText.x = this.game.world.centerX;
+    //infoText.y = this.game.world.centerY - 80;
+
+
+    //var buttonText = this.game.add.text(0, 0, "Lets go!", { font: "28px Tahoma", fill: "#ff", wordWrap: true, wordWrapWidth: menuPanel.width, align: "center" });
+    //buttonText.anchor.set(0.5);
+    //buttonText.x = this.game.world.centerX;
+    //buttonText.y = this.game.world.centerY + 2;
+
+    var buttonText = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'spacefont', 'Start', 25);
+    buttonText.anchor.setTo(0.5, 0.5);
+
 
     this.music = this.game.add.audio('intromusic');
     this.music.loopFull(1);

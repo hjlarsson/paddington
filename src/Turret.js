@@ -4,6 +4,9 @@ var BULLET_VELOCITY = 200;
 function Turret(game, ammo, player) {
     Phaser.Sprite.call(this, game, 0, 0, 'turret');
 
+    this.animations.add('walk');
+    this.animations.play('walk', 4, true);
+
     this.game = game;
     this.ammo = ammo;
     this.player = player;
