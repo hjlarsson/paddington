@@ -32,7 +32,7 @@ Game.prototype.create = function () {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     //  Resize our game world to be a 2000 x 2000 square
-    //this.game.world.setBounds(-1000, -1000, 2000, 2000);
+    this.game.world.setBounds(-400, -400, this.game.width + 200, this.game.height + 200);
 
     background = new Background(this.game);
 
@@ -54,10 +54,10 @@ Game.prototype.create = function () {
 
 
     //  Game over text
-    gameOver = this.game.add.bitmapText(this.game.world.centerX, this.game.world.centerY, 'spacefont', 'GAME OVER!', 110);
+    gameOver = this.game.add.bitmapText(this.game.width / 2, this.game.height / 2, 'spacefont', 'GAME OVER!', 110);
     gameOver.x = gameOver.x - gameOver.textWidth / 2;
     gameOver.y = gameOver.y - gameOver.textHeight / 3;
-    gameOver.visible = true;
+    gameOver.visible = false;
     gameOver.fixedToCamera = true;
 
     fireButton = this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -67,7 +67,6 @@ Game.prototype.create = function () {
     this.bgMusic.play();
 
     this.starPickupSound = this.game.add.audio('starpickup');
-
 };
 
 Game.prototype.update = function () {
@@ -101,7 +100,7 @@ Game.prototype.update = function () {
     if (! player.alive && gameOver.visible === false) {
         gameOver.visible = true;
         gameOver.alpha = 0;
-        console.log("Displaying game over");
+
         var fadeInGameOver = this.game.add.tween(gameOver);
         fadeInGameOver.to({alpha: 1}, 1000, Phaser.Easing.Quintic.Out);
         fadeInGameOver.onComplete.add(setResetHandlers);

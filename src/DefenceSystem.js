@@ -40,8 +40,8 @@ DefenceSystem.prototype.createTurret = function () {
     var turret = this.turrets.getFirstExists(false);
     if (turret) {
         var bounds = this.game.world.bounds;
-        var x = this.game.rnd.integerInRange(bounds.x + 200, bounds.width - 200);
-        var y = this.game.rnd.integerInRange(bounds.y + 200, bounds.height - 200);
+        var x = this.game.rnd.integerInRange(bounds.x + 400, bounds.width - 400);
+        var y = this.game.rnd.integerInRange(bounds.y + 400, bounds.height - 400);
         turret.reset(x, y);
     }
 
